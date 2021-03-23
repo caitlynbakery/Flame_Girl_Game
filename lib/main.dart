@@ -1,4 +1,6 @@
+import 'dart:ui' as ui;
 import 'package:flame/components.dart';
+import 'package:flame/geometry.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
@@ -8,9 +10,9 @@ void main() {
   runApp(GameWidget(game: MyApp()));
 }
 
-class MyApp extends BaseGame with DoubleTapDetector {
-  SpriteComponent boy = SpriteComponent();
-  SpriteAnimationComponent girlAnimation = SpriteAnimationComponent();
+class MyApp extends BaseGame with DoubleTapDetector, HasCollidables {
+  Boy boy = Boy();
+  Girl girlAnimation = Girl();
   String direction = 'right';
   bool running = true;
   Sprite starSprite;
@@ -50,7 +52,7 @@ class MyApp extends BaseGame with DoubleTapDetector {
     SpriteAnimationData spriteData = 
     SpriteAnimationData.sequenced(amount: 20, stepTime: 0.03, textureSize: Vector2(150, 163));
 
-    girlAnimation = SpriteAnimationComponent.fromFrameData(spriteSheet, spriteData)
+    girlAnimation = Girl.fromFrameData(spriteSheet, spriteData)
       ..x = 100
       ..y = size[1] - 163
       ..anchor = Anchor.center
@@ -90,4 +92,45 @@ class MyApp extends BaseGame with DoubleTapDetector {
     }
     running = !running;
   }
+}
+
+class Boy extends SpriteComponent with Hitbox, Collidable{
+   Boy({
+    Vector2 position,
+    Vector2 size,
+
+  }) : super(position: position, size: size) {
+    // debugMode = true;
+    addShape(HitboxRectangle());
+  }
+
+  @override 
+  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+    super.onCollision(intersectionPoints, other);
+    print('hi!  I want to be friends');
+    // remove();
+  }
+}
+
+class Girl extends SpriteAnimationComponent with Hitbox, Collidable {
+
+   Girl({
+    Vector2 position,
+    Vector2 size,
+  }) : super(position: position, size: size);
+
+  /// Creates a SpriteAnimationComponent from a [size], an [image] and [data]. Check [SpriteAnimationData] for more info on the available options.
+  ///
+  /// Optionally [removeOnFinish] can be set to true to have this component be auto removed from the BaseGame when the animation is finished.
+  Girl.fromFrameData(
+    ui.Image image,
+    SpriteAnimationData data, {
+    Vector2 position,
+    Vector2 size,
+  }) : super(position: position, size: size) {
+    animation = SpriteAnimation.fromFrameData(image, data);
+    // debugMode = true;
+    addShape(HitboxRectangle());
+  }
+
 }
