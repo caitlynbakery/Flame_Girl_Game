@@ -5,6 +5,7 @@ import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'boy.dart';
 
 void main() {
   runApp(GameWidget(game: MyApp()));
@@ -94,23 +95,7 @@ class MyApp extends BaseGame with DoubleTapDetector, HasCollidables {
   }
 }
 
-class Boy extends SpriteComponent with Hitbox, Collidable{
-   Boy({
-    Vector2 position,
-    Vector2 size,
 
-  }) : super(position: position, size: size) {
-    // debugMode = true;
-    addShape(HitboxRectangle());
-  }
-
-  @override 
-  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
-    super.onCollision(intersectionPoints, other);
-    print('hi!  I want to be friends');
-    // remove();
-  }
-}
 
 class Girl extends SpriteAnimationComponent with Hitbox, Collidable {
 
