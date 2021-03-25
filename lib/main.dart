@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'boy.dart';
+import 'girl.dart';
+import 'star.dart';
 
 void main() {
   runApp(GameWidget(game: MyApp()));
@@ -32,13 +34,14 @@ class MyApp extends BaseGame with DoubleTapDetector, HasCollidables {
 
     starSprite = await loadSprite('Star.png');
 
-    SpriteComponent star = SpriteComponent()
-      ..sprite = starSprite
-      ..size = Vector2(50, 50)
-      ..x = 200
-      ..y = 250;
+    Star star = Star(position: Vector2(200,250), size: Vector2(50, 50))
+      ..sprite = starSprite;
 
     add(star);
+
+    Star star2 = Star(position: Vector2(600,200), size: Vector2(50, 50))
+      ..sprite = starSprite;
+    add(star2);
 
     boy
       ..sprite = await loadSprite('boy.png')
@@ -97,25 +100,4 @@ class MyApp extends BaseGame with DoubleTapDetector, HasCollidables {
 
 
 
-class Girl extends SpriteAnimationComponent with Hitbox, Collidable {
 
-   Girl({
-    Vector2 position,
-    Vector2 size,
-  }) : super(position: position, size: size);
-
-  /// Creates a SpriteAnimationComponent from a [size], an [image] and [data]. Check [SpriteAnimationData] for more info on the available options.
-  ///
-  /// Optionally [removeOnFinish] can be set to true to have this component be auto removed from the BaseGame when the animation is finished.
-  Girl.fromFrameData(
-    ui.Image image,
-    SpriteAnimationData data, {
-    Vector2 position,
-    Vector2 size,
-  }) : super(position: position, size: size) {
-    animation = SpriteAnimation.fromFrameData(image, data);
-    // debugMode = true;
-    addShape(HitboxRectangle());
-  }
-
-}
